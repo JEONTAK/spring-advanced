@@ -52,7 +52,7 @@
 ### Configuration
 
 - [X] getTodos() 메서드에서 모든 Todo를 조회할 때, 각 Todo와 연관된 데이터를 개별적으로 가져오는 경우 N + 1 문제가 발생
-  - 해당 문제를 해결하기 위해 작성된 fetch join 쿼리를 EntityGraph를 사용하여 처리하도록 변경
+    - 해당 문제를 해결하기 위해 작성된 fetch join 쿼리를 EntityGraph를 사용하여 처리하도록 변경
 
 ---
 
@@ -65,6 +65,19 @@
 ### Configuration
 
 - [X] PassEncoderTest의 matches_메서드가_정상적으로_동작한다() 테스트가 의도대로 성공할 수 있게 수정
+
+## Lv 3-2. 테스트 코드 연습 2
+
+### Requirement
+
+- [X] 테스트 코드를 수정하여 예상대로 예외처리하는지 확인해야 한다.
+
+### Configuration
+
+- [X] ManagerServiceTest의 manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() 테스트가 의도대로 성공할 수 있게 수정
+  - 테스트 메서드 이름을 manager_목록_조회_시_Todo가_없다면_IRE_에러를_던진다()로 수정
+- [ ] CommentServiceTest의 comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 의도대로 성공할 수 있도록 테스트 코드를 수정
+- [ ] ManagerServiceTest의 todo의_user가_null인_경우_예외가_발생한다() 테스트가 의도대로 성공할 수 있도록 서비스 로직을 수정
 
 ---
 

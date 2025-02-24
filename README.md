@@ -13,6 +13,16 @@
 - [X] AuthService의 singup() 메서드 리팩토링
   - 이메일 중복 체크를 가장 앞으로 옮겨 encode() 동작 수행 하지 않아도 되게 수정
 
+## Lv 1-2. 코드 개선(불필요한 if-else 피하기)
+
+### Requirement
+
+- [ ] 불필요한 else 블록을 없애 코드를 간결하게 유지해야 한다.
+
+### Configuration
+
+- [ ] WeatherClient의 getTodayWeather() 메서드 리팩토링
+  - 2중첩 if문 블록을 간결하게 리팩토링햣 
 ---
 
 

@@ -43,6 +43,19 @@
 
 ---
 
+## Lv 2. N + 1 문제
+
+### Requirement
+
+- [ ] Todo와 연관된 데이터를 처리할 경우 N + 1 문제없이 처리해야 한다.
+
+### Configuration
+
+- [ ] getTodos() 메서드에서 모든 Todo를 조회할 때, 각 Todo와 연관된 데이터를 개별적으로 가져오는 경우 N + 1 문제가 발생
+  - 해당 문제를 해결하기 위해 작성된 fetch join 쿼리를 EntityGraph를 사용하여 처리하도록 변경
+
+---
+
 ## Commit Convention
 
 ### 형식

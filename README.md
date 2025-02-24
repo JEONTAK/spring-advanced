@@ -76,7 +76,7 @@
 
 - [X] ManagerServiceTest의 manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() 테스트가 의도대로 성공할 수 있게 수정
   - 테스트 메서드 이름을 manager_목록_조회_시_Todo가_없다면_IRE_에러를_던진다()로 수정
-- [ ] CommentServiceTest의 comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 의도대로 성공할 수 있도록 테스트 코드를 수정
+- [X] CommentServiceTest의 comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 의도대로 성공할 수 있도록 테스트 코드를 수정
 - [ ] ManagerServiceTest의 todo의_user가_null인_경우_예외가_발생한다() 테스트가 의도대로 성공할 수 있도록 서비스 로직을 수정
 
 ---

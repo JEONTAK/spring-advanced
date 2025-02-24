@@ -29,16 +29,17 @@
 
 ### Requirement
 
-- [ ] Validation 처리를 통해 코드를 간결히 개선 해야 한다.
+- [X] Validation 처리를 통해 코드를 간결히 개선 해야 한다.
 
 ### Configuration
 
-- [ ] UserService의 changePassword()를 Validation을 통한 리팩토링
+- [X] UserService의 changePassword()를 Validation을 통한 리팩토링
     - 비밀번호 요구 조건을 Validation Annotation 사용하여 추가
         - 길이 : 8글자 이상
             - @Size(min = 8, message = "새 비밀번호는 8자 이상이어야 합니다.")
         - 요구 조건 : 숫자, 대문자 포함
             - @Pattern(regexp = "비밀번호 패턴", message = "새 비밀번호는 숫자와 대문자를 포함해야 합니다.")
+    - Validation 에러인 MethodArgumentNotValidException을 처리하기위해 GlobalExceptionHandler에 ExceptionHandler 추가
 
 ---
 

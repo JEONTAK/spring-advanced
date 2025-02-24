@@ -17,12 +17,15 @@
 
 ### Requirement
 
-- [ ] 불필요한 else 블록을 없애 코드를 간결하게 유지해야 한다.
+- [X] 불필요한 else 블록을 없애 코드를 간결하게 유지해야 한다.
 
 ### Configuration
 
-- [ ] WeatherClient의 getTodayWeather() 메서드 리팩토링
-  - 2중첩 if문 블록을 간결하게 리팩토링햣 
+- [X] WeatherClient의 getTodayWeather() 메서드 리팩토링
+  - 처음 if문의 조건에 걸릴경우 예외 처리 되므로, else 문 사용 불필요함. 따라서 else 문 제거
+  - else문 안의 if문에 대한 조건문을 따로 메서드화 하여 이후 동일 코드 사용시 코드 재사용성 증가 효과 노림
+
+
 ---
 
 

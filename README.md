@@ -11,7 +11,7 @@
 ### Configuration
 
 - [X] AuthService의 singup() 메서드 리팩토링
-  - 이메일 중복 체크를 가장 앞으로 옮겨 encode() 동작 수행 하지 않아도 되게 수정
+    - 이메일 중복 체크를 가장 앞으로 옮겨 encode() 동작 수행 하지 않아도 되게 수정
 
 ## Lv 1-2. 코드 개선(불필요한 if-else 피하기)
 
@@ -22,13 +22,25 @@
 ### Configuration
 
 - [X] WeatherClient의 getTodayWeather() 메서드 리팩토링
-  - 처음 if문의 조건에 걸릴경우 예외 처리 되므로, else 문 사용 불필요함. 따라서 else 문 제거
-  - else문 안의 if문에 대한 조건문을 따로 메서드화 하여 이후 동일 코드 사용시 코드 재사용성 증가 효과 노림
+    - 처음 if문의 조건에 걸릴경우 예외 처리 되므로, else 문 사용 불필요함. 따라서 else 문 제거
+    - else문 안의 if문에 대한 조건문을 따로 메서드화 하여 이후 동일 코드 사용시 코드 재사용성 증가 효과 노림
 
+## Lv 1-3. 코드 개선(Validation)
+
+### Requirement
+
+- [ ] Validation 처리를 통해 코드를 간결히 개선 해야 한다.
+
+### Configuration
+
+- [ ] UserService의 changePassword()를 Validation을 통한 리팩토링
+    - 비밀번호 요구 조건을 Validation Annotation 사용하여 추가
+        - 길이 : 8글자 이상
+            - @Size(min = 8, message = "새 비밀번호는 8자 이상이어야 합니다.")
+        - 요구 조건 : 숫자, 대문자 포함
+            - @Pattern(regexp = "비밀번호 패턴", message = "새 비밀번호는 숫자와 대문자를 포함해야 합니다.")
 
 ---
-
-
 
 ## Commit Convention
 

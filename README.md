@@ -6,11 +6,12 @@
 
 ### Requirement
 
-- [ ] AuthService 클래스에 있는 signup() 메서드의 코드를 리팩토링하여 불필요한 동작이 일어나지 않게 해야한다.
+- [X] AuthService 클래스에 있는 signup() 메서드의 코드를 리팩토링하여 불필요한 동작이 일어나지 않게 해야한다.
 
 ### Configuration
 
-- [ ] AuthService의 singup() 메서드 리팩토링
+- [X] AuthService의 singup() 메서드 리팩토링
+  - 이메일 중복 체크를 가장 앞으로 옮겨 encode() 동작 수행 하지 않아도 되게 수정
 
 ---
 

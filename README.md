@@ -56,6 +56,18 @@
 
 ---
 
+## Lv 3-1. 테스트 코드 연습 1
+
+### Requirement
+
+- [ ] 테스트 코드를 수정하여 예상대로 성공하는지 확인해야 한다.
+
+### Configuration
+
+- [ ] PassEncoderTest의 matches_메서드가_정상적으로_동작한다() 테스트가 의도대로 성공할 수 있게 수정
+
+---
+
 ## Commit Convention
 
 ### 형식

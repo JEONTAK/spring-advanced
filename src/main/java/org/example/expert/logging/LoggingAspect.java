@@ -33,7 +33,7 @@ public class LoggingAspect {
     @Around("pointCut()")
     public Object loggingMethodCall(ProceedingJoinPoint joinPoint) {
         Method method = getMethod(joinPoint);
-        logger.info("===Admin Access: {}===)", method.getName());
+        logger.info("===Admin Access: {}===", method.getName());
         return logReturn(joinPoint);
     }
     

@@ -127,14 +127,14 @@
 
 ### 2-1. 의사결정 과정
 
-- [ ] Service에서 ResponseDto 반환시 Static Factory Method를 사용한다.
+- [X] Service에서 ResponseDto 반환시 Static Factory Method를 사용한다.
 - [ ] 가독성을 위하여 for loop 대신 stream을 사용한다.
 - [ ] Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
 
  
 ### 2-2. 해결 과정
 
-- [ ] Static Factory Method 사용 위치
+- [X] Static Factory Method 사용 위치
   - AuthService
     - signup
     - signin

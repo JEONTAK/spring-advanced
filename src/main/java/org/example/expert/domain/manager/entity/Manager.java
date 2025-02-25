@@ -22,8 +22,12 @@ public class Manager {
     @JoinColumn(name = "todo_id", nullable = false)
     private Todo todo;
 
-    public Manager(User user, Todo todo) {
+    private Manager(User user, Todo todo) {
         this.user = user;
         this.todo = todo;
+    }
+
+    public static Manager toEntity(User user, Todo todo){
+        return new Manager(user, todo);
     }
 }

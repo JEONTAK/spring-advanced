@@ -12,11 +12,15 @@ public class TodoSaveResponse {
     private final String weather;
     private final UserResponse user;
 
-    public TodoSaveResponse(Long id, String title, String contents, String weather, UserResponse user) {
+    private TodoSaveResponse(Long id, String title, String contents, String weather, UserResponse user) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.weather = weather;
         this.user = user;
+    }
+
+    public static TodoSaveResponse of(Long id, String title, String contents, String weather, UserResponse user) {
+        return new TodoSaveResponse(id, title, contents, weather, user);
     }
 }

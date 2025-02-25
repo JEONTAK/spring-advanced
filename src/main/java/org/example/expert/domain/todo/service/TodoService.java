@@ -31,7 +31,7 @@ public class TodoService {
 
         String weather = weatherClient.getTodayWeather();
 
-        Todo newTodo = new Todo(
+        Todo newTodo = Todo.toEntity(
                 todoSaveRequest.getTitle(),
                 todoSaveRequest.getContents(),
                 weather,
@@ -39,12 +39,12 @@ public class TodoService {
         );
         Todo savedTodo = todoRepository.save(newTodo);
 
-        return new TodoSaveResponse(
+        return TodoSaveResponse.of(
                 savedTodo.getId(),
                 savedTodo.getTitle(),
                 savedTodo.getContents(),
                 weather,
-                new UserResponse(user.getId(), user.getEmail())
+                UserResponse.of(user.getId(), user.getEmail())
         );
     }
 
@@ -53,12 +53,12 @@ public class TodoService {
 
         Page<Todo> todos = todoRepository.findAllByOrderByModifiedAtDesc(pageable);
 
-        return todos.map(todo -> new TodoResponse(
+        return todos.map(todo -> TodoResponse.of(
                 todo.getId(),
                 todo.getTitle(),
                 todo.getContents(),
                 todo.getWeather(),
-                new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()),
+                UserResponse.of(todo.getUser().getId(), todo.getUser().getEmail()),
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         ));
@@ -70,12 +70,12 @@ public class TodoService {
 
         User user = todo.getUser();
 
-        return new TodoResponse(
+        return TodoResponse.of(
                 todo.getId(),
                 todo.getTitle(),
                 todo.getContents(),
                 todo.getWeather(),
-                new UserResponse(user.getId(), user.getEmail()),
+                UserResponse.of(user.getId(), user.getEmail()),
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );

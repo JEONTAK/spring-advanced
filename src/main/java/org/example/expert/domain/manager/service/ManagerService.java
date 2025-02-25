@@ -46,12 +46,12 @@ public class ManagerService {
             throw new InvalidRequestException("일정 작성자는 본인을 담당자로 등록할 수 없습니다.");
         }
 
-        Manager newManagerUser = new Manager(managerUser, todo);
+        Manager newManagerUser = Manager.toEntity(managerUser, todo);
         Manager savedManagerUser = managerRepository.save(newManagerUser);
 
-        return new ManagerSaveResponse(
+        return ManagerSaveResponse.of(
                 savedManagerUser.getId(),
-                new UserResponse(managerUser.getId(), managerUser.getEmail())
+                UserResponse.of(managerUser.getId(), managerUser.getEmail())
         );
     }
 
@@ -65,9 +65,9 @@ public class ManagerService {
         List<ManagerResponse> dtoList = new ArrayList<>();
         for (Manager manager : managerList) {
             User user = manager.getUser();
-            dtoList.add(new ManagerResponse(
+            dtoList.add(ManagerResponse.of(
                     manager.getId(),
-                    new UserResponse(user.getId(), user.getEmail())
+                    UserResponse.of(user.getId(), user.getEmail())
             ));
         }
         return dtoList;

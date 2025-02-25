@@ -14,7 +14,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object Handler) {
         LocalDateTime time = LocalDateTime.now();
-        logger.info("===Admin Access: {}===)", request.getMethod());
+        logger.info("===Admin Access: {}===", request.getMethod());
         logger.info("Time: {}, URL: {}", time, request.getRequestURI());
         return true;
     }

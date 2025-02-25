@@ -12,11 +12,10 @@ public class LoggingInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object Handler){
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object Handler) {
         LocalDateTime time = LocalDateTime.now();
-        logger.info("---Delete Comment---");
-        logger.info("Time : [{}]", time);
-        logger.info("URL : [{}]", request.getRequestURI());
+        logger.info("===Admin Access: {}===)", request.getMethod());
+        logger.info("Time: {}, URL: {}", time, request.getRequestURI());
         return true;
     }
 }

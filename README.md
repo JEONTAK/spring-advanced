@@ -94,7 +94,7 @@
     - CommentAdminController의 deleteComment()
     - UserAdminController의 changeUserRole()
 
-- [ ] Interceptor를 사용하여 구현하기
+- [X] Interceptor를 사용하여 구현하기
     - 어드민 인증 여부를 확인
     - 인증되지 않은 경우 예외를 발생 시킴
     - 인증 성공시, 요청 시각과 URL을 로깅
@@ -112,6 +112,7 @@
 - 공통 : Logger 클래스를 활용하여 기록
 
 - deleteComment()는 Interceptor 사용, changeUserRole()은 AOP 사용하여 구현해보려고 함.
+
 ---
 
 ## Commit Convention

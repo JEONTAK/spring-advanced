@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-    @EntityGraph(attributePaths = {"users"})
+    @EntityGraph(attributePaths = {"user"})
     Page<Todo> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"users"})
+    @EntityGraph(attributePaths = {"user"})
     Optional<Todo> findById(Long todoId);
 
     int countById(Long todoId);

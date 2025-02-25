@@ -36,7 +36,8 @@ public class LoggingAspect {
         logger.info("===Admin Access: {}===)", method.getName());
         return logReturn(joinPoint);
     }
-
+    
+    //로그 기록 위한 메서드
     private Object logReturn(ProceedingJoinPoint joinPoint) {
         String userId = String.valueOf(request.getAttribute("userId"));
         String requestUrl = request.getRequestURI();
@@ -44,6 +45,7 @@ public class LoggingAspect {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
+        //requestBody JSON -> String
         String requestBody = Arrays.stream(args)
                 .map(arg -> {
                     try {
@@ -55,14 +57,16 @@ public class LoggingAspect {
                 .toList()
                 .toString();
 
+        //실행
         Object result;
         try {
             result = joinPoint.proceed();
         } catch (Throwable e) {
-            logger.error("⛔ [ERROR] {} - Message: {}", methodName, e.getMessage(), e);
+            logger.error("[ERROR] {} - Message: {}", methodName, e.getMessage(), e);
             throw new RuntimeException(e);
         }
 
+        //실행 후 결과 값인 responseBody JSON -> String
         String responseBody;
         try {
             responseBody = objectMapper.writeValueAsString(result);

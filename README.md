@@ -85,8 +85,8 @@
 
 ### Requirement
 
-- [ ] Interceptor 또는 AOP를 활용하여 로깅 처리를 해야 한다.
-- [ ] 어드민 사용자만 접근할 수 있는 특정 API에는 접근할 때 마다 접근 로그를 기록해야 한다.
+- [X] Interceptor 또는 AOP를 활용하여 로깅 처리를 해야 한다.
+- [X] 어드민 사용자만 접근할 수 있는 특정 API에는 접근할 때 마다 접근 로그를 기록해야 한다.
 
 ### Configuration
 
@@ -115,6 +115,58 @@
 
 ---
 
+## Lv 5. 내가 정의한 문제와 해결과정
+
+### 1. 문제 인식 및 정의
+
+- 각 Service에서 ResponseDto로 변환 후 반환시 new를 사용하여 많은 인스턴스가 생성 될 경우 메모리에 문제가 발생 할 수 있다.
+- for loop을 사용하여 가독성이 좋지 않다.
+- Service에서 다른 Repository를 의존하고 있어 결합도가 높은 상태이다.
+
+### 2. 해결 방안
+
+### 2-1. 의사결정 과정
+
+- [ ] Service에서 ResponseDto 반환시 Static Factory Method를 사용한다.
+- [ ] 가독성을 위하여 for loop 대신 stream을 사용한다.
+- [ ] Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
+
+ 
+### 2-2. 해결 과정
+
+- [ ] Static Factory Method 사용 위치
+  - AuthService
+    - signup
+    - signin
+  - CommentService
+    - saveComment
+    - getComments
+  - ManagerService
+    - saveManager
+    - getManagers
+  - TodoService
+    - saveTodo
+    - getTodos
+    - getTodo
+  - UserService
+    - getUser
+
+- [ ] for loop -> stream 변경 위치
+  - CommentService
+    - getComments
+  - ManagerService
+    - getManagers
+
+- [ ] Repository아닌 Service를 의존(순환 참조 문제 생각 하면서 구현하기)
+  - ManagerService
+    - UserRepository -> UserService
+    - TodoRepository -> TodoService
+  - CommentService
+    - TodoRepository -> TodoService
+  - AuthService
+    - UserRepository -> UserService (해당 부분은 한번 더 생각 해보기)
+
+---
 ## Commit Convention
 
 ### 형식

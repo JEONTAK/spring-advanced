@@ -75,10 +75,43 @@
 ### Configuration
 
 - [X] ManagerServiceTest의 manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() 테스트가 의도대로 성공할 수 있게 수정
-  - 테스트 메서드 이름을 manager_목록_조회_시_Todo가_없다면_IRE_에러를_던진다()로 수정
+    - 테스트 메서드 이름을 manager_목록_조회_시_Todo가_없다면_IRE_에러를_던진다()로 수정
 - [X] CommentServiceTest의 comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 의도대로 성공할 수 있도록 테스트 코드를 수정
-- [ ] ManagerServiceTest의 todo의_user가_null인_경우_예외가_발생한다() 테스트가 의도대로 성공할 수 있도록 서비스 로직을 수정
+- [X] ManagerServiceTest의 todo의_user가_null인_경우_예외가_발생한다() 테스트가 의도대로 성공할 수 있도록 서비스 로직을 수정
 
+---
+
+## Lv 4. API 로깅
+
+### Requirement
+
+- [ ] Interceptor 또는 AOP를 활용하여 로깅 처리를 해야 한다.
+- [ ] 어드민 사용자만 접근할 수 있는 특정 API에는 접근할 때 마다 접근 로그를 기록해야 한다.
+
+### Configuration
+
+- 어드민 사용자만 접근할 수 있는 컨트롤러 메서드는 다음 두가지
+    - CommentAdminController의 deleteComment()
+    - UserAdminController의 changeUserRole()
+
+- [ ] Interceptor를 사용하여 구현하기
+    - 어드민 인증 여부를 확인
+    - 인증되지 않은 경우 예외를 발생 시킴
+    - 인증 성공시, 요청 시각과 URL을 로깅
+
+- [ ] AOP를 사용하여 구현하기
+  - @Around 어노테이션을 사용하여 어드민 API 메서드 실행 전후에 요청/응답 데이터를 로깅
+  - 요청 본문과 응답 본문은 JSON 형식을 사용
+  - 로깅 내용은 다음과 같음
+    - 요청한 사용자의 ID
+    - API 요청 시각
+    - API 요청 URL
+    - 요청 본문(RequestBody)
+    - 응답 본문(ResponseBody)
+
+- 공통 : Logger 클래스를 활용하여 기록
+
+- deleteComment()는 Interceptor 사용, changeUserRole()은 AOP 사용하여 구현해보려고 함.
 ---
 
 ## Commit Convention

@@ -198,11 +198,11 @@
 ### Configuration
 3가지로 나눈 단위 테스트 구현 할 예정
 
-- [ ] Repository의 단위 테스트 구현
-  - [ ] CommentRepository
-  - [ ] ManagerRepository
-  - [ ] TodoRepository
-  - [ ] UserRepository
+- [X] Repository의 단위 테스트 구현
+  - [X] CommentRepository
+  - [X] ManagerRepository
+  - [X] TodoRepository
+  - [X] UserRepository
 
 - [ ] Service의 단위 테스트 구현
   - [ ] AuthService

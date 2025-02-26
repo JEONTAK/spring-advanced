@@ -128,8 +128,8 @@
 ### 2-1. 의사결정 과정
 
 - [X] Service에서 ResponseDto 반환시 Static Factory Method를 사용한다.
-- [ ] 가독성을 위하여 for loop 대신 stream을 사용한다.
-- [ ] Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
+- [X] 가독성을 위하여 for loop 대신 stream을 사용한다.
+- [X] Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
 
  
 ### 2-2. 해결 과정
@@ -157,7 +157,7 @@
   - ManagerService
     - getManagers
 
-- [ ] Repository아닌 Service를 의존(순환 참조 문제 생각 하면서 구현하기)
+- [X] Repository아닌 Service를 의존(순환 참조 문제 생각 하면서 구현하기)
   - ManagerService
     - UserRepository -> UserService
     - TodoRepository -> TodoService
@@ -165,6 +165,7 @@
     - TodoRepository -> TodoService
   - AuthService
     - UserRepository -> UserService (해당 부분은 한번 더 생각 해보기)
+      - 해당 부분은 리포지토리를 UserRepository 한개만 사용하기 때문에 Service로 변환하지 않아도 된다고 생각하여 바꾸지 않기로 결정
 
 ### 3. 해결 회고
 
@@ -178,6 +179,9 @@
   - 2차적으로 map()과 toList()를 사용하여 바로 return 할 수 있도록 구현하였다.
 
 - Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
+  - 결합도를 낮추기 위하여 다른 Repository를 의존하는 것이 아닌 Service를 의존하도록 구현함.
+  - 사실 Service를 구현하는 것도 결합도가 존재함.
+  - 따라서 더 좋은 방법이 있다면, 해당 방법을 사용해보는 것도 좋을 것이라 생각했음.
 
 ---
 ## Commit Convention

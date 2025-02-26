@@ -184,6 +184,45 @@
   - 따라서 더 좋은 방법이 있다면, 해당 방법을 사용해보는 것도 좋을 것이라 생각했음.
 
 ---
+
+## Lv 6. 테스트 커버리지
+
+### Requirement
+
+- Line Coverage를 확인하고 커버리지를 높여야 한다.
+- Condition Coverage를 확인하고, 커버리지를 높여야 한다.
+
+- 기존 Coverage
+![img.png](img/oldCoverage.png)
+
+### Configuration
+3가지로 나눈 단위 테스트 구현 할 예정
+
+- [ ] Repository의 단위 테스트 구현
+  - [ ] CommentRepository
+  - [ ] ManagerRepository
+  - [ ] TodoRepository
+  - [ ] UserRepository
+
+- [ ] Service의 단위 테스트 구현
+  - [ ] AuthService
+  - [ ] CommentAdminService
+  - [ ] CommentService(일부 구현)
+  - [ ] ManagerService(일부 구현)
+  - [ ] TodoService
+  - [ ] UserAdminService
+  - [ ] UserService
+
+- [ ] Controller의 단위 테스트 구현
+  - [ ] AuthController
+  - [ ] CommentAdminController
+  - [ ] CommentController
+  - [ ] ManagerController
+  - [ ] TodoController
+  - [ ] UserAdminController
+  - [ ] UserController
+
+---
 ## Commit Convention
 
 ### 형식

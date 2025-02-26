@@ -1,5 +1,6 @@
 package org.example.expert.domain.comment.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
 import org.example.expert.domain.comment.dto.response.CommentResponse;
@@ -14,9 +15,6 @@ import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,16 +48,15 @@ public class CommentService {
     public List<CommentResponse> getComments(long todoId) {
         List<Comment> commentList = commentRepository.findByTodoIdWithUser(todoId);
 
-        List<CommentResponse> dtoList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            User user = comment.getUser();
-            CommentResponse dto = CommentResponse.of(
-                    comment.getId(),
-                    comment.getContents(),
-                    UserResponse.of(user.getId(), user.getEmail())
-            );
-            dtoList.add(dto);
-        }
-        return dtoList;
+        return commentList.stream()
+                .map(comment -> {
+                    User user = comment.getUser();
+                    return CommentResponse.of(
+                            comment.getId(),
+                            comment.getContents(),
+                            UserResponse.of(user.getId(), user.getEmail())
+                    );
+                })
+                .toList();
     }
 }

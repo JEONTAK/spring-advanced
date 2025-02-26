@@ -1,5 +1,6 @@
 package org.example.expert.domain.manager.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
@@ -16,9 +17,6 @@ import org.example.expert.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -62,15 +60,14 @@ public class ManagerService {
 
         List<Manager> managerList = managerRepository.findByTodoIdWithUser(todo.getId());
 
-        List<ManagerResponse> dtoList = new ArrayList<>();
-        for (Manager manager : managerList) {
-            User user = manager.getUser();
-            dtoList.add(ManagerResponse.of(
-                    manager.getId(),
-                    UserResponse.of(user.getId(), user.getEmail())
-            ));
-        }
-        return dtoList;
+        return managerList.stream()
+                .map(manager -> {
+                    User user = manager.getUser();
+                    return ManagerResponse.of(
+                            manager.getId(),
+                            UserResponse.of(user.getId(), user.getEmail())
+                    );
+                }).toList();
     }
 
     @Transactional

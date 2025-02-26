@@ -151,7 +151,7 @@
   - UserService
     - getUser
 
-- [ ] for loop -> stream 변경 위치
+- [X] for loop -> stream 변경 위치
   - CommentService
     - getComments
   - ManagerService
@@ -165,6 +165,19 @@
     - TodoRepository -> TodoService
   - AuthService
     - UserRepository -> UserService (해당 부분은 한번 더 생각 해보기)
+
+### 3. 해결 회고
+
+- Service에서 ResponseDto 반환시 Static Factory Method를 사용한다.
+  - 총 13개의 Response 및 Entity에서 Static Factory Method를 사용함.
+  - 기존 public으로 사용하던 생성자를 private로 변경하여 Static Factory Method를 사용해야 해당 생성자를 사용 가능 하게끔 수정
+  - new 키워드를 static method에서 사용함으로서 중복되는 인스턴스 생성 방지 가능
+
+- 가독성을 위하여 for loop 대신 stream을 사용한다.
+  - for loop 대신 forEach 및 람다식을 사용하여 1차적으로 변환하였다.
+  - 2차적으로 map()과 toList()를 사용하여 바로 return 할 수 있도록 구현하였다.
+
+- Service에서 다른 Repository를 의존하는 것이 아닌 Service를 사용한다.
 
 ---
 ## Commit Convention

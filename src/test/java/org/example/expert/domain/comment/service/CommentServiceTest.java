@@ -1,13 +1,16 @@
 package org.example.expert.domain.comment.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
+import org.example.expert.domain.comment.dto.response.CommentResponse;
 import org.example.expert.domain.comment.dto.response.CommentSaveResponse;
 import org.example.expert.domain.comment.entity.Comment;
 import org.example.expert.domain.comment.repository.CommentRepository;
@@ -34,25 +37,22 @@ class CommentServiceTest {
     private CommentService commentService;
 
     @Test
-    public void comment_등록_중_할일을_찾지_못해_에러가_발생한다() {
-        // given
+    public void 댓글_등록_중_할일을_찾지_못해_에러가_발생한다() {
+        //Given
         long todoId = 1;
         CommentSaveRequest request = new CommentSaveRequest("contents");
         AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
 
         given(todoService.findById(anyLong())).willThrow(new InvalidRequestException("Todo not found"));
 
-        // when
-        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> {
-            commentService.saveComment(authUser, todoId, request);
-        });
-
-        // then
-        assertEquals("Todo not found", exception.getMessage());
+        //When & Then
+        assertThatThrownBy(() -> commentService.saveComment(authUser, todoId, request))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("Todo not found");
     }
 
     @Test
-    public void comment를_정상적으로_등록한다() {
+    public void 댓글을_정상적으로_등록한다() {
         // given
         long todoId = 1;
         CommentSaveRequest request = new CommentSaveRequest("contents");
@@ -69,5 +69,27 @@ class CommentServiceTest {
 
         // then
         assertNotNull(result);
+    }
+
+    @Test
+    void 특정_게시글의_댓글_조회시_정상적으로_조회_되어야_한다() {
+        //Given
+        long todoId = 1;
+        AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
+        User user = User.fromAuthUser(authUser);
+        Todo todo = Todo.toEntity("title", "title", "Sunny", user);
+        List<Comment> comments = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            CommentSaveRequest request = new CommentSaveRequest("contents" + i);
+            comments.add(Comment.toEntity(request.getContents(), user, todo));
+        }
+        given(commentRepository.findByTodoIdWithUser(any())).willReturn(comments);
+
+        //When
+        List<CommentResponse> result = commentService.getComments(todoId);
+
+        //Then
+        assertNotNull(result);
+        assertThat(result.size()).isEqualTo(10);
     }
 }

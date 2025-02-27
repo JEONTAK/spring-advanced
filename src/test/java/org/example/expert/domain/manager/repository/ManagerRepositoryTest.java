@@ -33,7 +33,7 @@ class ManagerRepositoryTest {
 
         Todo todo = todoRepository.save(Todo.toEntity("Title", "Contents", "Sunny", user1));
 
-        Manager manager = managerRepository.findById(1L)
+        Manager manager = managerRepository.findById(todo.getManagers().get(0).getId())
                 .orElseThrow(() -> new InvalidRequestException("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다."));
 
         //When

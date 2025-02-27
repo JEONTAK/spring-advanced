@@ -1,10 +1,13 @@
 package org.example.expert.domain.manager.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,17 +49,18 @@ class ManagerServiceTest {
         given(todoService.findById(todoId)).willThrow(new InvalidRequestException("Todo not found"));
 
         // when & then
-        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> managerService.getManagers(todoId));
-        assertEquals("Todo not found", exception.getMessage());
+        assertThatThrownBy(() -> managerService.getManagers(todoId))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("Todo not found");
     }
+
 
     @Test
     void todo의_user가_null인_경우_예외가_발생한다() {
         // given
-        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
         long todoId = 1L;
         long managerUserId = 2L;
-
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
         Todo todo = new Todo();
         ReflectionTestUtils.setField(todo, "user", null);
 
@@ -65,11 +69,52 @@ class ManagerServiceTest {
         given(todoService.findById(todoId)).willReturn(todo);
 
         // when & then
-        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () ->
-            managerService.saveManager(authUser, todoId, managerSaveRequest)
-        );
+        assertThatThrownBy(() -> managerService.saveManager(authUser, todoId, managerSaveRequest))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.");
+    }
 
-        assertEquals("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.", exception.getMessage());
+    @Test
+    void todo의_user가_매니저로_등록하려는_유저가_아닌_경우_예외가_발생한다() {
+        // given
+        long todoId = 1L;
+        long managerUserId = 2L;
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        User user = User.toEntity("b@b.com", "password", UserRole.USER);
+
+        Todo todo = new Todo();
+        ReflectionTestUtils.setField(todo, "user", user);
+
+        ManagerSaveRequest managerSaveRequest = new ManagerSaveRequest(managerUserId);
+
+        given(todoService.findById(todoId)).willReturn(todo);
+
+        // when & then
+        assertThatThrownBy(() -> managerService.saveManager(authUser, todoId, managerSaveRequest))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.");
+    }
+
+    @Test
+    void todo의_user가_본인을_매니저로_등록하려는_경우_예외가_발생한다() {
+        // given
+        long todoId = 1L;
+        long managerUserId = 2L;
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        User user = User.fromAuthUser(authUser);
+
+        Todo todo = new Todo();
+        ReflectionTestUtils.setField(todo, "user", user);
+
+        ManagerSaveRequest managerSaveRequest = new ManagerSaveRequest(managerUserId);
+
+        given(todoService.findById(todoId)).willReturn(todo);
+        given(userService.findById(managerSaveRequest.getManagerUserId())).willReturn(Optional.of(user));
+
+        // when & then
+        assertThatThrownBy(() -> managerService.saveManager(authUser, todoId, managerSaveRequest))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("일정 작성자는 본인을 담당자로 등록할 수 없습니다.");
     }
 
     @Test // 테스트코드 샘플
@@ -122,4 +167,108 @@ class ManagerServiceTest {
         assertEquals(managerUser.getId(), response.getUser().getId());
         assertEquals(managerUser.getEmail(), response.getUser().getEmail());
     }
+
+
+    @Test
+    void 매니저가_삭제될_시_delete는_한_번만_실행되어야_한다() {
+        //Given
+        long userId = 1L;
+        long todoId = 1L;
+        long managerUserId = 2L;
+        User user = User.toEntity("email", "password", UserRole.ADMIN);
+        Todo todo = Todo.toEntity("Test Title", "Test Contents", "Sunny", user);
+        Manager managerUser = Manager.toEntity(user, todo);
+        ReflectionTestUtils.setField(managerUser, "id", managerUserId);
+        given(userService.findById(anyLong())).willReturn(Optional.of(user));
+        given(todoService.findById(anyLong())).willReturn(todo);
+        given(managerRepository.findById(anyLong())).willReturn(Optional.of(managerUser));
+        //When
+        managerService.deleteManager(userId, todoId, managerUserId);
+
+        //Then
+        verify(managerRepository, times(1)).delete(managerUser);
+    }
+
+    @Test
+    void 매니저가_삭제될_시_게시글의_유저가_null인_경우_예외가_발생한다() {
+        //Given
+        long userId = 1L;
+        long todoId = 1L;
+        long managerUserId = 2L;
+        User user = User.toEntity("email", "password", UserRole.ADMIN);
+        Todo todo = Todo.toEntity("Test Title", "Test Contents", "Sunny", null);
+        given(userService.findById(anyLong())).willReturn(Optional.of(user));
+        given(todoService.findById(anyLong())).willReturn(todo);
+        //When & Then
+        assertThatThrownBy(() -> managerService.deleteManager(userId, todoId, managerUserId))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("해당 일정을 만든 유저가 유효하지 않습니다.");
+    }
+
+    @Test
+    void 매니저가_삭제될_시_유저가_게시글의_유저와_다른_경우_예외가_발생한다() {
+        //Given
+        long userId = 2L;
+        long todoId = 1L;
+        long managerUserId = 2L;
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        User user = User.fromAuthUser(authUser);  // 일정을 만든 유저
+        AuthUser authUser2 = new AuthUser(2L, "b@b.com", UserRole.USER);
+        User user2 = User.fromAuthUser(authUser2);  // 다른 유저
+        Todo todo = Todo.toEntity("Test Title", "Test Contents", "Sunny", user);
+        Manager managerUser = Manager.toEntity(user, todo);
+        ReflectionTestUtils.setField(managerUser, "id", managerUserId);
+        given(userService.findById(anyLong())).willReturn(Optional.of(user2));
+        given(todoService.findById(anyLong())).willReturn(todo);
+
+        //When & Then
+        assertThatThrownBy(() -> managerService.deleteManager(userId, todoId, managerUserId))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("해당 일정을 만든 유저가 유효하지 않습니다.");
+    }
+
+    @Test
+    void 매니저가_삭제될_시_매니저가_존재하지_않는_경우_예외가_발생한다() {
+        //Given
+        long userId = 1L;
+        long todoId = 1L;
+        long managerUserId = 2L;
+        User user = User.toEntity("email", "password", UserRole.ADMIN);
+        Todo todo = Todo.toEntity("Test Title", "Test Contents", "Sunny", user);
+        Manager managerUser = Manager.toEntity(user, todo);
+        ReflectionTestUtils.setField(managerUser, "id", managerUserId);
+        given(userService.findById(anyLong())).willReturn(Optional.of(user));
+        given(todoService.findById(anyLong())).willReturn(todo);
+        given(managerRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        //When & Then
+        assertThatThrownBy(() -> managerService.deleteManager(userId, todoId, managerUserId))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("Manager not found");
+    }
+
+    @Test
+    void 매니저가_삭제될_시_게시글에_해당하는_매니저가_아닐_경우_예외가_발생한다() {
+        //Given
+        long userId = 1L;
+        long todoId = 1L;
+        long anotherTodoId = 2L;
+        long managerUserId = 2L;
+        User user = User.toEntity("email", "password", UserRole.ADMIN);
+        Todo todo = Todo.toEntity("Test Title", "Test Contents", "Sunny", user);
+        ReflectionTestUtils.setField(todo, "id", todoId);
+        Todo anotherTodo = new Todo();
+        ReflectionTestUtils.setField(anotherTodo, "id", anotherTodoId);
+        Manager managerUser = Manager.toEntity(user, anotherTodo);
+        ReflectionTestUtils.setField(managerUser, "id", managerUserId);
+        given(userService.findById(anyLong())).willReturn(Optional.of(user));
+        given(todoService.findById(anyLong())).willReturn(todo);
+        given(managerRepository.findById(anyLong())).willReturn(Optional.of(managerUser));
+
+        //When & Then
+        assertThatThrownBy(() -> managerService.deleteManager(userId, todoId, managerUserId))
+                .isInstanceOf(InvalidRequestException.class)
+                .hasMessage("해당 일정에 등록된 담당자가 아닙니다.");
+    }
+
 }

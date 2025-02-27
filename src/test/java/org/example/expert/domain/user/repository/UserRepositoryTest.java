@@ -32,7 +32,7 @@ class UserRepositoryTest {
     @Test
     void 이메일을_통해_유저가_존재하는지_확인할_수_있다() {
         //Given
-        User user = userRepository.save(User.toEntity("user@example.com", "password", UserRole.USER));
+        userRepository.save(User.toEntity("user@example.com", "password", UserRole.USER));
 
         //When
         boolean isExist = userRepository.existsByEmail("user@example.com");

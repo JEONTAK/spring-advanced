@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.example.expert.domain.comment.entity.Comment;
-import org.example.expert.domain.manager.entity.Manager;
-import org.example.expert.domain.manager.repository.ManagerRepository;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
 import org.example.expert.domain.user.entity.User;
@@ -27,9 +25,6 @@ class CommentRepositoryTest {
     @Autowired
     private TodoRepository todoRepository;
 
-    @Autowired
-    private ManagerRepository managerRepository;
-
     @Test
     void 특정_게시글_id에_해당하는_댓글과_작성자를_조회할_수_있다() {
         //Given
@@ -37,8 +32,6 @@ class CommentRepositoryTest {
         User user2 = userRepository.save(User.toEntity("user2@example.com", "password", UserRole.USER));
 
         Todo todo = todoRepository.save(Todo.toEntity("Title", "Contents", "Sunny", user1));
-
-        Manager manager = managerRepository.save(Manager.toEntity(todo.getUser(), todo));
 
         Comment comment1 = commentRepository.save(Comment.toEntity("user1", user1, todo));
         Comment comment2 = commentRepository.save(Comment.toEntity("user2", user2, todo));

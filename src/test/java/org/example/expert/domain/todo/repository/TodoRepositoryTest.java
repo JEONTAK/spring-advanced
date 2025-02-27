@@ -30,11 +30,11 @@ class TodoRepositoryTest {
         User user1 = userRepository.save(User.toEntity("user1@example.com", "password", UserRole.USER));
         User user2 = userRepository.save(User.toEntity("user2@example.com", "password", UserRole.USER));
 
-        Todo todo1 = todoRepository.save(Todo.toEntity("Title1", "Contents1", "Sunny", user1));
-        Todo todo2 = todoRepository.save(Todo.toEntity("Title2", "Contents2", "Windy", user1));
-        Todo todo3 = todoRepository.save(Todo.toEntity("Title3", "Contents3", "Rain", user1));
-        Todo todo4 = todoRepository.save(Todo.toEntity("Title4", "Contents4", "Cloud", user2));
-        Todo todo5 = todoRepository.save(Todo.toEntity("Title5", "Contents5", "Rain", user2));
+        todoRepository.save(Todo.toEntity("Title1", "Contents1", "Sunny", user1));
+        todoRepository.save(Todo.toEntity("Title2", "Contents2", "Windy", user1));
+        todoRepository.save(Todo.toEntity("Title3", "Contents3", "Rain", user1));
+        todoRepository.save(Todo.toEntity("Title4", "Contents4", "Cloud", user2));
+        todoRepository.save(Todo.toEntity("Title5", "Contents5", "Rain", user2));
         Todo todo6 = todoRepository.save(Todo.toEntity("Title6", "Contents6", "Sunny", user2));
 
         Pageable pageable = PageRequest.of(0, 10);
@@ -57,10 +57,8 @@ class TodoRepositoryTest {
 
         Todo todo = todoRepository.save(Todo.toEntity("Title", "Contents", "Sunny", user));
 
-        long findTodoId = 1L;
-
         //When
-        Todo findTodo = todoRepository.findById(findTodoId)
+        Todo findTodo = todoRepository.findById(todo.getId())
                 .orElseThrow(() -> new InvalidRequestException("Todo not found."));
 
         //Then

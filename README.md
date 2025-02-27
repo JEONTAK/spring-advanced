@@ -192,11 +192,8 @@
 - Line Coverage를 확인하고 커버리지를 높여야 한다.
 - Condition Coverage를 확인하고, 커버리지를 높여야 한다.
 
-- 기존 Coverage
-![img.png](img/oldCoverage.png)
-
 ### Configuration
-3가지로 나눈 단위 테스트 구현 할 예정
+2가지로 나눈 단위 테스트 구현 할 예정
 
 - [X] Repository의 단위 테스트 구현
   - [X] CommentRepository
@@ -204,24 +201,22 @@
   - [X] TodoRepository
   - [X] UserRepository
 
-- [ ] Service의 단위 테스트 구현
-  - [ ] AuthService
-  - [ ] CommentAdminService
-  - [ ] CommentService(일부 구현)
-  - [ ] ManagerService(일부 구현)
-  - [ ] TodoService
-  - [ ] UserAdminService
-  - [ ] UserService
+- [X] Service의 단위 테스트 구현
+  - [X] AuthService
+  - [X] CommentAdminService
+  - [X] CommentService(일부 구현)
+  - [X] ManagerService(일부 구현)
+  - [X] TodoService
+  - [X] UserAdminService
+  - [X] UserService
 
-- [ ] Controller의 단위 테스트 구현
-  - [ ] AuthController
-  - [ ] CommentAdminController
-  - [ ] CommentController
-  - [ ] ManagerController
-  - [ ] TodoController
-  - [ ] UserAdminController
-  - [ ] UserController
+### Result
+- **기존 Coverage**
+  ![img.png](img/oldCoverage.png)
 
+- **테스트 구현 이후 Coverage**
+  ![img.png](img/newCoverage.png)
+  ![img.png](img/newCoverage2.png)
 ---
 ## Commit Convention
 
